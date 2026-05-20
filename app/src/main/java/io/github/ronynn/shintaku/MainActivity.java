@@ -1,4 +1,4 @@
-package io.github.ronynn.karui;
+package io.github.ronynn.shintaku;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;

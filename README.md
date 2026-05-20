@@ -1,6 +1,6 @@
 # shintaku
 
-local-first study oracle. eliminates decision fatigue. you input sleep metrics, it calculates biological cognitive capacity. you input syllabus, it assigns exact page counts based on real-time neural alignment. it learns your reading speed. it builds its own graphs. zero external dependencies. zero tracking.
+the app stems from my anxiety about what to study. i study one thing and worry about another. local-first study oracle. eliminates decision fatigue on what to study. you input sleep metrics, it calculates biological cognitive capacity. you input syllabus, it assigns exact page counts based on real-time neural alignment. it learns your reading speed. it builds its own graphs. zero external dependencies. zero tracking.
 
 ## architecture
 
@@ -9,6 +9,12 @@ local-first study oracle. eliminates decision fatigue. you input sleep metrics, 
 * native inline css variables for theming.
 * native svg generation for data visualization.
 * localstorage database.
+
+<div align="center">
+  <img src="fastlane/metadata/android/en-US/images/icon.png" alt="App Icon" width="45%">
+</div>
+
+
 
 ## the algorithms
 
@@ -80,19 +86,13 @@ $$\text{Pages} = \frac{2700}{Y_{predicted}}$$
 
 pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
 
-<div align="center">
-  <img src="fastlane/metadata/android/en-US/images/icon.png" alt="App Icon" />
-</div>
-
 
 Inspired by the system-24 theme aesthetics.
 
 ## Screenshots
 
 <div align="center">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Screenshot 1" width="45%">
-  
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="Screenshot 2" width="45%">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Screenshot 1" width="75%">
 </div>
 
 

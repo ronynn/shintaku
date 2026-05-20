@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Karui</title>
+<title>Shintaku</title>
 <style>
 :root { --bg: #282828; --surface: #3c3836; --border: #d79921; --text: #ebdbb2; --accent: #fabd2f; --accent-txt: #282828; --gray: #928374; }
 [data-theme="dracula"] { --bg: #282a36; --surface: #44475a; --border: #ff79c6; --text: #f8f8f2; --accent: #bd93f9; --accent-txt: #282a36; --gray: #6272a4; }
@@ -19,533 +19,716 @@
 [data-theme="tokyo-night"] { --bg: #1a1b26; --surface: #24283c; --border: #7aa2f7; --text: #a9b1d6; --accent: #7aa2f7; --accent-txt: #1d202f; --gray: #565f89; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; border-radius: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 20px; font-size: 16px; overflow-x: hidden; }
 
-header { display: flex; justify-content: flex-start; gap: 20px; padding: 20px 20px 10px; font-size: 26px; background: var(--bg); z-index: 10; }
-header div { opacity: 0.4; transition: opacity 0.2s; padding-bottom: 5px; cursor: pointer; }
-header div.active { opacity: 1; color: var(--accent); border-bottom: 2px solid var(--accent); margin-bottom: -2px; }
-
-#viewport { display: flex; flex: 1; width: 200vw; height: calc(100vh - 65px); transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1); }
-.screen { width: 100vw; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; display: block; }
+header { padding-bottom: 20px; display: flex; align-items: baseline; justify-content: space-between; }
+.app-title { font-size: 1.6em; font-weight: bold; color: var(--text); }
+.app-title span { font-size: 0.6em; font-weight: normal; opacity: 0.7; margin-left: 5px; }
 
 .box { border: 1px solid var(--border); padding: 25px 15px 15px; position: relative; background: var(--bg); margin-bottom: 25px; }
-.box-title { position: absolute; top: -10px; left: 10px; background: var(--bg); padding: 0 5px; font-size: 12px; color: var(--text); font-weight: bold; }
+.box-title { position: absolute; top: -10px; left: 10px; background: var(--bg); padding: 0 5px; font-size: 0.8em; color: var(--text); font-weight: bold; }
 
-input, select, button { width: 100%; padding: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); font-size: 16px; outline: none; }
-button { background: var(--accent); color: var(--accent-txt); cursor: pointer; border: none; text-transform: uppercase; font-weight: bold; }
+input, select, button { width: 100%; padding: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); font-size: inherit; outline: none; margin-bottom: 10px; font-family: inherit; }
+button { background: var(--accent); color: var(--accent-txt); cursor: pointer; border: none; text-transform: uppercase; font-weight: bold; margin-bottom: 0; }
 button:active { filter: brightness(0.8); }
 
-.tabs-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
-.tab { padding: 8px 16px; background: var(--bg); color: var(--gray); border: 1px solid var(--border); white-space: nowrap; cursor: pointer; transition: opacity 0.2s; }
-.tab.active { background: var(--border); color: var(--bg); font-weight: bold; }
-
 .grid-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.theme-btn { padding: 10px 4px; background: var(--surface); color: var(--gray); border: 1px solid var(--border); text-transform: uppercase; font-size: 11px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
+.theme-btn { padding: 10px 4px; background: var(--surface); color: var(--gray); border: 1px solid var(--border); text-transform: uppercase; font-size: 0.7em; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
 .theme-btn.active { background: var(--accent); color: var(--accent-txt); }
 
-.heading-large { font-size: 22px; margin: 15px 0 10px; font-weight: normal; color: var(--text); text-transform: uppercase; letter-spacing: 1px; }
+.item-group { margin-bottom: 15px; }
+.tag-header { font-size: 0.9em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; border-bottom: 1px solid var(--surface); padding-bottom: 3px; }
+.item-row { border-bottom: 1px dashed rgba(255,255,255,0.1); padding: 8px 0; display: flex; flex-direction: column; gap: 8px; }
+.item-main { display: flex; justify-content: space-between; align-items: flex-start; }
+.item-controls { display: flex; gap: 6px; }
+.item-controls button { padding: 6px; font-size: 0.8em; width: auto; margin-bottom: 0; }
 
-.note-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 14px 0; background: var(--bg); cursor: pointer; transition: transform 0.2s, opacity 0.2s; position: relative; border-bottom: 1px dashed rgba(255,255,255,0.05); }
-.note-item span:first-of-type { flex: 1; position: relative; min-width: 0; white-space: normal; word-break: break-word; overflow: visible; padding-right: 10px; }
-.note-item.done span:first-of-type { text-decoration: line-through; opacity: 0.5; }
+.font-size-ctrl { display: flex; align-items: center; justify-content: flex-start; gap: 15px; font-size: 1em; margin-top: 20px; }
+.font-size-ctrl button { width: 45px; height: 45px; padding: 0; font-size: 1.5em; background: var(--surface); color: var(--text); border: 1px solid var(--border); }
 
-.ghost { opacity: 0.2; }
-.drag-image { position: fixed; z-index: 9999; pointer-events: none; background: var(--surface); border: 1px solid var(--border); padding: 12px; transform: scale(1.02) rotate(1deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5); color: var(--text); display: flex; align-items: center; width: calc(100vw - 70px); }
+#lock-screen { text-align: center; padding: 40px 0; }
+#lock-screen input { max-width: 300px; margin: 10px auto; display: block; }
 
-.menu { position: fixed; background: var(--surface); border: 1px solid var(--border); padding: 10px; z-index: 100; display: none; box-shadow: 5px 5px 0 var(--border); }
-.menu button { margin-bottom: 5px; background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-.menu button:last-child { margin-bottom: 0; }
-
-.font-size-ctrl { display: flex; align-items: center; justify-content: flex-start; gap: 15px; font-size: 16px; margin-top: 20px; }
-.font-size-ctrl button { width: 45px; height: 45px; padding: 0; font-size: 24px; background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-
-.about-text { font-size: 14px; line-height: 1.5; color: var(--text); opacity: 0.9; }
-.about-text code { color: var(--accent); }
+.graph-box { margin-bottom: 25px; }
+.graph-box p { font-size: 0.8em; margin-bottom: 4px; color: var(--gray); }
+.graph-box svg { width: 100%; height: 160px; background: var(--surface); border: 1px solid var(--border); }
 
 #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
-.modal-box { background: var(--bg); border: 2px solid var(--border); padding: 20px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
+.modal-box { background: var(--bg); border: 2px solid var(--border); padding: 20px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+.modal-box label { font-size: 0.8em; color: var(--gray); }
 
-.toggle-container { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--border); }
+#toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--border); color: var(--bg); padding: 10px 20px; font-weight: bold; z-index: 999; display: none; text-transform: uppercase; font-size: 0.9em; }
+
+.timer-block { font-size: 3em; font-family: monospace; text-align: center; background: var(--surface); border: 2px solid var(--accent); padding: 20px; margin-bottom: 15px; color: var(--accent); text-shadow: 0 0 5px var(--accent); }
+
+#tag-stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; font-size: 0.85em; }
+.tag-stat { background: var(--surface); padding: 8px; border: 1px solid var(--border); }
+.tag-stat span { color: var(--accent); float: right; }
 </style>
 </head>
 <body>
 
+<div id="toast"></div>
+
 <header>
-  <div id="tab-home" class="active" onclick="switchScreen(0)">Home</div>
-  <div id="tab-settings" onclick="switchScreen(1)">Settings</div>
+  <div class="app-title">Shintaku<span>神託</span></div>
+  <div id="clock-display" style="font-size:0.8em; color:var(--gray);"></div>
 </header>
 
-<div id="viewport">
-  <div class="screen" id="home-screen">
-    <div class="box">
-      <span class="box-title">Notes Input</span>
-      <input type="text" id="note-in" placeholder="Type note or command">
-      <div style="margin-top:10px; font-size:14px; color: var(--gray);" id="stats">Remaining: 0 &nbsp;&nbsp; Completed: 0</div>
-    </div>
-    <div class="box">
-      <span class="box-title">Notes List</span>
-      <div class="tabs-container" id="tabs-bar"></div>
-      <div id="notes-list"></div>
-    </div>
-  </div>
-
-  <div class="screen" id="settings-screen">
-    <div class="box">
-      <span class="box-title">Theme & Font</span>
-      <h3 class="heading-large">Themes</h3>
-      <div class="grid-btns" id="theme-btns">
-        <button class="theme-btn" onclick="setTheme('gruvbox')">GRUVBOX</button>
-        <button class="theme-btn" onclick="setTheme('dracula')">DRACULA</button>
-        <button class="theme-btn" onclick="setTheme('monokai')">MONOKAI</button>
-        <button class="theme-btn" onclick="setTheme('nord')">NORD</button>
-        <button class="theme-btn" onclick="setTheme('purple')">PURPLE</button>
-        <button class="theme-btn" onclick="setTheme('amoled')">AMOLED</button>
-        <button class="theme-btn" onclick="setTheme('cupcake')">CUPCAKE</button>
-        <button class="theme-btn" onclick="setTheme('catppuccin')">CATPPUCCIN</button>
-        <button class="theme-btn" onclick="setTheme('catppuccin-frappe')">FRAPPE</button>
-        <button class="theme-btn" onclick="setTheme('everforest')">EVERFOREST</button>
-        <button class="theme-btn" onclick="setTheme('everforest-light')">EV-LIGHT</button>
-        <button class="theme-btn" onclick="setTheme('tokyo-night')">TOKYO</button>
-      </div>
-      
-      <h3 class="heading-large">Fonts</h3>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('system-ui')">SYSTEM</button>
-        <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('monospace')">MONO</button>
-        <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('serif')">SERIF</button>
-        <button class="theme-btn" style="width:auto; flex:1; border-style: dashed;" onclick="document.getElementById('font-file').click()">+ CUSTOM</button>
-        <input type="file" id="font-file" accept=".ttf,.otf" style="display:none" onchange="loadCustomFont(event)">
-      </div>
-      
-      <div class="font-size-ctrl">
-        <button onclick="chgSize(-2)">-</button>
-        <span id="f-size-disp">18px</span>
-        <button onclick="chgSize(2)">+</button>
-      </div>
-      
-      <div class="toggle-container">
-        <span style="font-size: 14px;">Double Tap √d To Delete</span>
-        <input type="checkbox" id="dt-toggle" onchange="toggleDt(this.checked)" style="width:24px; height:24px; accent-color:var(--accent);">
-      </div>
-      <div class="toggle-container" style="margin-top: 10px;">
-        <span style="font-size: 14px;">Add Notes To Bottom</span>
-        <input type="checkbox" id="add-btm-toggle" onchange="toggleAddBtm(this.checked)" style="width:24px; height:24px; accent-color:var(--accent);">
-      </div>
-    </div>
-    
-    <div class="box">
-      <span class="box-title">About</span>
-      <div class="about-text">
-        Karui<br>
-        A privacy friendly, lightweight, bloat-free open source todo list app with retro aesthetics made by ronynn.<br><br>
-        Use <code>///</code> to add a new tab, <code>\\\</code> to remove current tab. Long press any tab to rename or delete it or add a new tab. <code>√c</code> copies a note, <code>√d</code> deletes a note, <code>√r</code> restores a note.
-      </div>
-    </div>
-
-    <div class="box">
-      <span class="box-title">Data & Bin</span>
-      <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <button onclick="exportData()" style="background:var(--surface); color:var(--text); border:1px solid var(--border); font-size:14px;">Export JSON</button>
-        <button onclick="triggerImport()" style="background:var(--surface); color:var(--text); border:1px solid var(--border); font-size:14px;">Import JSON</button>
-        <input type="file" id="import-file" style="display:none" onchange="importData(event)">
-      </div>
-      <h3 class="heading-large" style="font-size: 16px;">Recycle Bin</h3>
-      <div id="trash-list"></div>
-      <button onclick="clearTrash()" style="margin-top:15px; background:var(--bg); color:var(--text); border:1px solid var(--border);">Clear Recycle Bin</button>
-    </div>
-  </div>
+<div id="lock-screen" class="box">
+  <span class="box-title">Circadian Setup</span>
+  <p style="margin-bottom:15px; font-size:0.9em;">Log bio-context to open the network state.</p>
+  <label style="font-size:0.8em; display:block; margin-bottom:4px;">Yesterday Bedtime</label>
+  <input type="datetime-local" id="sleep-time">
+  <label style="font-size:0.8em; display:block; margin-bottom:4px;">Today Wake Time</label>
+  <input type="datetime-local" id="wake-time">
+  <button onclick="submitSleepLog()" style="max-width:300px; margin:15px auto 0;">Unlock State</button>
 </div>
 
-<div id="context-menu" class="menu">
-  <button id="btn-mv-l" onclick="moveTab(-1)">Move Left</button>
-  <button id="btn-mv-r" onclick="moveTab(1)">Move Right</button>
-  <button onclick="openPrompt('Rename Tab', contextTab, val => { if(val) renameTab(val); })">Rename</button>
-  <button onclick="deleteTabClick()">Delete</button>
-  <button onclick="openPrompt('New Tab', '', val => { if(val) addTab(val); })">Add Tab</button>
+<div id="main-workspace" style="display:none;">
+  
+  <div class="box">
+    <span class="box-title">The Engine</span>
+    <div id="oracle-action-zone">
+      <button id="oracle-btn" onclick="triggerOracleCalculations()">Consult the Oracle</button>
+    </div>
+    <div id="active-assignment-zone" style="display:none;">
+      <p id="assignment-text" style="font-size:1.1em; margin-bottom:15px; text-align:center;"></p>
+      <div class="timer-block" id="stopwatch-display">00:00</div>
+      <button onclick="completeActiveAssignment()">Mark Done</button>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="box-title">Register Material</span>
+    <input type="text" id="book-title" placeholder="Material Name">
+    <select id="book-tag">
+      <option value="math">Math</option>
+      <option value="science">Science</option>
+      <option value="tech">Tech</option>
+      <option value="social_science">Social Science</option>
+      <option value="news">News</option>
+      <option value="cooking">Cooking</option>
+      <option value="language">Language</option>
+      <option value="manga">Manga</option>
+    </select>
+    <div style="display:flex; gap:10px;">
+      <input type="number" id="book-pages" placeholder="Total Pages" min="1">
+      <input type="number" id="book-importance" placeholder="Importance (1-10)" min="1" max="10">
+      <input type="number" id="book-difficulty" placeholder="Difficulty (1-10)" min="1" max="10">
+    </div>
+    <button onclick="addMaterialToLibrary()" style="margin-top:5px;">Commit to Matrix</button>
+  </div>
+
+  <div class="box">
+    <span class="box-title">Material Matrix Inventory</span>
+    <div id="library-inventory-list"></div>
+  </div>
+
+  <div class="box">
+    <span class="box-title">Neural Vectors & Analytics</span>
+    
+    <div class="graph-box">
+      <p>Subject Competency Vectors (Cumulative Pages)</p>
+      <div id="graph-growth"></div>
+    </div>
+    
+    <div class="graph-box">
+      <p>Total Volume Invested (Minutes)</p>
+      <div id="graph-volume"></div>
+      <div id="tag-stats-container"></div>
+    </div>
+    
+    <div class="graph-box">
+      <p>Tag Matrix Distribution</p>
+      <div id="graph-distribution"></div>
+    </div>
+    
+    <div class="graph-box">
+      <p>Friction Index vs Sleep Quality Matrix</p>
+      <div id="graph-sleep"></div>
+    </div>
+
+    <div class="graph-box">
+      <p>Sleep Duration Vector (Hours)</p>
+      <div id="graph-sleep-hours"></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="box-title">Theme Control Matrix</span>
+    <div class="grid-btns" id="theme-btns">
+      <button class="theme-btn" onclick="setTheme('gruvbox')">GRUVBOX</button>
+      <button class="theme-btn" onclick="setTheme('dracula')">DRACULA</button>
+      <button class="theme-btn" onclick="setTheme('monokai')">MONOKAI</button>
+      <button class="theme-btn" onclick="setTheme('nord')">NORD</button>
+      <button class="theme-btn" onclick="setTheme('purple')">PURPLE</button>
+      <button class="theme-btn" onclick="setTheme('amoled')">AMOLED</button>
+      <button class="theme-btn" onclick="setTheme('cupcake')">CUPCAKE</button>
+      <button class="theme-btn" onclick="setTheme('catppuccin')">CATPPUCCIN</button>
+      <button class="theme-btn" onclick="setTheme('catppuccin-frappe')">FRAPPE</button>
+      <button class="theme-btn" onclick="setTheme('everforest')">EVERFOREST</button>
+      <button class="theme-btn" onclick="setTheme('everforest-light')">EV-LIGHT</button>
+      <button class="theme-btn" onclick="setTheme('tokyo-night')">TOKYO</button>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="box-title">Typography & Data</span>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('system-ui')">SYSTEM</button>
+      <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('monospace')">MONO</button>
+      <button class="theme-btn" style="width:auto; flex:1;" onclick="setFont('serif')">SERIF</button>
+      <button class="theme-btn" style="width:auto; flex:1; border-style: dashed;" onclick="document.getElementById('font-file').click()">+ CUSTOM</button>
+      <input type="file" id="font-file" accept=".ttf,.otf" style="display:none" onchange="loadCustomFont(event)">
+    </div>
+    
+    <div class="font-size-ctrl">
+      <button onclick="chgSize(-1)">-</button>
+      <span>Size <span id="f-size-disp">5</span>/10</span>
+      <button onclick="chgSize(1)">+</button>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+      <button onclick="exportData()" style="background:var(--surface); color:var(--text); border:1px solid var(--border);">Export JSON</button>
+      <button onclick="document.getElementById('import-file').click()" style="background:var(--surface); color:var(--text); border:1px solid var(--border);">Import JSON</button>
+      <input type="file" id="import-file" style="display:none" onchange="importData(event)">
+    </div>
+  </div>
+
 </div>
 
 <div id="modal-overlay">
-  <div class="modal-box">
-    <div id="modal-title" style="font-weight:bold;"></div>
-    <input type="text" id="modal-input">
-    <div style="display:flex; gap:10px;">
-      <button style="background:var(--surface); color:var(--text);" onclick="closeModal(false)">Cancel</button>
-      <button onclick="closeModal(true)">Save</button>
+  <div class="modal-box" id="modal-content-edit" style="display:none;">
+    <div style="font-weight:bold; font-size:1.1em; border-bottom:1px solid var(--border); padding-bottom:5px;">Modify Registry</div>
+    <input type="hidden" id="edit-book-id">
+    <label>Material Name / Title</label>
+    <input type="text" id="edit-book-title">
+    <label>Total Pages</label>
+    <input type="number" id="edit-book-pages" min="1">
+    <label>Importance Matrix (1-10)</label>
+    <input type="number" id="edit-book-importance" min="1" max="10">
+    <label>Difficulty Rating (1-10)</label>
+    <input type="number" id="edit-book-difficulty" min="1" max="10">
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button style="background:var(--surface); color:var(--text);" onclick="closeModal()">Cancel</button>
+      <button onclick="commitRegistryEdits()">Save</button>
+    </div>
+  </div>
+
+  <div class="modal-box" id="modal-content-manual" style="display:none;">
+    <div style="font-weight:bold; font-size:1.1em; border-bottom:1px solid var(--border); padding-bottom:5px;">Manual Session Input</div>
+    <input type="hidden" id="manual-book-id">
+    <label>Pages Completed</label>
+    <input type="number" id="manual-pages" min="1">
+    <label>Minutes Spent</label>
+    <input type="number" id="manual-mins" min="1">
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button style="background:var(--surface); color:var(--text);" onclick="closeModal()">Cancel</button>
+      <button onclick="logManualWorkEngine()">Commit Log</button>
     </div>
   </div>
 </div>
 
 <script>
-let noteCategories = ['Main'];
-let activeCategory = 'Main';
-let notes = [];
-let recycleBin = [];
-let currentTheme = 'gruvbox';
-let currentFont = 'system-ui';
-let fontSize = 18;
-let doubleTapDelete = false;
-let addNoteBottom = false;
-let customFontData = '';
+const SYSTEM_TAG_LIST = ['math', 'science', 'tech', 'social_science', 'news', 'cooking', 'language', 'manga'];
 
-let touchTimer, dragTarget, contextTab, dragImg, dragType, modalCb, lastTrashTap = 0, hoveredTab = null;
+let appState = {
+  library: [],
+  logs: [],
+  sleepRegistry: {},
+  theme: 'gruvbox',
+  font: 'system-ui',
+  fontLevel: 5,
+  customFontData: ''
+};
 
-function init() {
-  noteCategories = JSON.parse(localStorage.getItem("noteCategories")) || ["Main"];
-  notes = JSON.parse(localStorage.getItem("notes")) || [];
-  recycleBin = JSON.parse(localStorage.getItem("recycleBin")) || [];
-  currentTheme = localStorage.getItem("theme") || "gruvbox";
-  currentFont = localStorage.getItem("font") || "system-ui";
-  fontSize = parseInt(localStorage.getItem("fontSize"), 10) || 18;
-  doubleTapDelete = localStorage.getItem("doubleTapDelete") === "true";
-  addNoteBottom = localStorage.getItem("addNoteBottom") === "true";
-  customFontData = localStorage.getItem("customFontData") || "";
+let currentActiveTask = null;
+let taskTimerRef = null;
+let trackedSeconds = 0;
 
-  if(customFontData) injectCustomFont(customFontData);
-  setTheme(currentTheme); 
-  setFont(currentFont); 
-  updateSizeDisp();
-  document.getElementById('dt-toggle').checked = doubleTapDelete;
-  document.getElementById('add-btm-toggle').checked = addNoteBottom;
+function appRuntimeInit() {
+  const saved = localStorage.getItem('shintaku_state');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      appState = { ...appState, ...parsed };
+    } catch(e) {}
+  }
+
+  if (appState.customFontData) injectCustomFont(appState.customFontData);
+  setTheme(appState.theme);
+  setFont(appState.font);
+  updateSizeDisplayEngine();
+  startClockEngine();
+  checkCircadianLockState();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function startClockEngine() {
+  const update = () => { document.getElementById('clock-display').innerText = new Date().toLocaleString(); };
+  setInterval(update, 1000);
+  update();
+}
+
+function checkCircadianLockState() {
+  const todayKey = new Date().toISOString().split('T')[0];
+  if (appState.sleepRegistry[todayKey]) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('main-workspace').style.display = 'block';
+    renderLibraryInventory();
+    renderDataVisualizations();
+  } else {
+    document.getElementById('lock-screen').style.display = 'block';
+    document.getElementById('main-workspace').style.display = 'none';
+  }
+}
+
+function submitSleepLog() {
+  const sleepVal = document.getElementById('sleep-time').value;
+  const wakeVal = document.getElementById('wake-time').value;
+  if (!sleepVal || !wakeVal) return showToast("enter both times");
+
+  const tSleep = new Date(sleepVal);
+  const tWake = new Date(wakeVal);
+  const rawDuration = (tWake - tSleep) / (1000 * 60 * 60);
+
+  if (rawDuration <= 0) return showToast("wake must be after sleep");
+
+  let environmentFactor = 1.0;
+  const wakeHour = tWake.getHours();
+  if (wakeHour > 10 && wakeHour < 22) environmentFactor = 0.75;
+
+  const qualityCalculated = Math.min((rawDuration / 8.0) * environmentFactor, 1.2);
+  const todayKey = new Date().toISOString().split('T')[0];
+
+  appState.sleepRegistry[todayKey] = {
+    sleepTime: sleepVal,
+    wakeTime: wakeVal,
+    hoursDuration: rawDuration,
+    computedQuality: qualityCalculated
+  };
+
+  saveToLocalStorage();
+  checkCircadianLockState();
+}
+
+function validateOneToTen(val) {
+  if (isNaN(val) || val < 1 || val > 10) return false;
+  return true;
+}
+
+function addMaterialToLibrary() {
+  const title = document.getElementById('book-title').value.trim();
+  const tag = document.getElementById('book-tag').value;
+  const pages = parseInt(document.getElementById('book-pages').value, 10);
+  const imp = parseInt(document.getElementById('book-importance').value, 10);
+  const diff = parseInt(document.getElementById('book-difficulty').value, 10);
+
+  if (!title) return showToast("name required");
+  if (isNaN(pages) || pages < 1) return showToast("pages invalid");
+  if (!validateOneToTen(imp)) return showToast("importance 1-10 only");
+  if (!validateOneToTen(diff)) return showToast("difficulty 1-10 only");
+
+  appState.library.push({
+    id: Date.now(), title, tag, totalPages: pages, completedPages: 0, importance: imp, difficulty: diff
+  });
+
+  saveToLocalStorage();
+  renderLibraryInventory();
   
-  if(!noteCategories.includes(activeCategory)) activeCategory = noteCategories[0] || "Main";
+  document.getElementById('book-title').value = '';
+  document.getElementById('book-pages').value = '';
+  document.getElementById('book-importance').value = '';
+  document.getElementById('book-difficulty').value = '';
+}
+
+function renderLibraryInventory() {
+  const target = document.getElementById('library-inventory-list');
+  target.innerHTML = '';
+
+  if (appState.library.length === 0) {
+    target.innerHTML = '<p style="font-size:0.8em; color:var(--gray);">Empty inventory array.</p>';
+    return;
+  }
+
+  const grouped = {};
+  SYSTEM_TAG_LIST.forEach(t => grouped[t] = []);
+  appState.library.forEach(b => { if(grouped[b.tag]) grouped[b.tag].push(b); else grouped[b.tag] = [b]; });
+
+  SYSTEM_TAG_LIST.forEach(tag => {
+    if (grouped[tag].length === 0) return;
+    
+    const grpDiv = document.createElement('div');
+    grpDiv.className = 'item-group';
+    grpDiv.innerHTML = `<div class="tag-header">${tag}</div>`;
+
+    grouped[tag].forEach((item, idx) => {
+      const percentage = item.totalPages > 0 ? ((item.completedPages / item.totalPages) * 100).toFixed(1) : 0;
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <div class="item-main">
+          <span style="font-size:0.9em;">#${idx+1} "${item.title}" - ${item.completedPages}/${item.totalPages} pgs (${percentage}%)</span>
+          <span style="font-size:0.7em; color:var(--gray);">Imp: ${item.importance} | Diff: ${item.difficulty}</span>
+        </div>
+        <div class="item-controls">
+          <button onclick="openManualModal(${item.id})">Manual Session Input</button>
+          <button style="background:var(--surface); color:var(--text); border:1px solid var(--border);" onclick="openEditRegistryModal(${item.id})">Edit</button>
+          <button style="background:var(--bg); color:var(--text); border:1px solid var(--border);" onclick="removeRegistryItem(${item.id})">Del</button>
+        </div>
+      `;
+      grpDiv.appendChild(row);
+    });
+    target.appendChild(grpDiv);
+  });
+}
+
+function openManualModal(id) {
+  document.getElementById('manual-book-id').value = id;
+  document.getElementById('manual-pages').value = '';
+  document.getElementById('manual-mins').value = '';
+  document.getElementById('modal-content-edit').style.display = 'none';
+  document.getElementById('modal-content-manual').style.display = 'flex';
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function logManualWorkEngine() {
+  const id = parseInt(document.getElementById('manual-book-id').value, 10);
+  const pCount = parseInt(document.getElementById('manual-pages').value, 10);
+  const mCount = parseInt(document.getElementById('manual-mins').value, 10);
+
+  if (isNaN(pCount) || isNaN(mCount) || pCount <= 0 || mCount <= 0) return showToast("invalid numbers");
+
+  const item = appState.library.find(x => x.id === id);
+  if (!item) return;
+
+  item.completedPages = Math.min(item.totalPages, item.completedPages + pCount);
   
-  renderTabs(); 
-  renderNotes(); 
-  setupDragAndDrop();
+  const todayKey = new Date().toISOString().split('T')[0];
+  let hoursSinceWakeFallback = 6;
+  if (appState.sleepRegistry[todayKey]) {
+    hoursSinceWakeFallback = (new Date() - new Date(appState.sleepRegistry[todayKey].wakeTime)) / (1000 * 60 * 60);
+  }
+
+  appState.logs.push({ date: todayKey, tag: item.tag, difficulty: item.difficulty, pagesRead: pCount, seconds: mCount * 60, hsw: hoursSinceWakeFallback });
+
+  saveToLocalStorage();
+  renderLibraryInventory();
+  renderDataVisualizations();
+  closeModal();
 }
 
-function saveData() {
-  localStorage.setItem("noteCategories", JSON.stringify(noteCategories));
-  localStorage.setItem("notes", JSON.stringify(notes));
-  localStorage.setItem("recycleBin", JSON.stringify(recycleBin));
-  localStorage.setItem("theme", currentTheme);
-  localStorage.setItem("font", currentFont);
-  localStorage.setItem("fontSize", fontSize);
-  localStorage.setItem("doubleTapDelete", doubleTapDelete);
-  localStorage.setItem("addNoteBottom", addNoteBottom);
-  localStorage.setItem("customFontData", customFontData);
+function removeRegistryItem(id) {
+  appState.library = appState.library.filter(x => x.id !== id);
+  saveToLocalStorage();
+  renderLibraryInventory();
 }
 
-function switchScreen(idx) {
-  document.getElementById('viewport').style.transform = `translateX(-${idx * 100}vw)`;
-  document.getElementById('tab-home').classList.toggle('active', idx === 0);
-  document.getElementById('tab-settings').classList.toggle('active', idx === 1);
+function openEditRegistryModal(id) {
+  const item = appState.library.find(x => x.id === id);
+  if (!item) return;
+  document.getElementById('edit-book-id').value = item.id;
+  document.getElementById('edit-book-title').value = item.title;
+  document.getElementById('edit-book-pages').value = item.totalPages;
+  document.getElementById('edit-book-importance').value = item.importance;
+  document.getElementById('edit-book-difficulty').value = item.difficulty;
+  
+  document.getElementById('modal-content-manual').style.display = 'none';
+  document.getElementById('modal-content-edit').style.display = 'flex';
+  document.getElementById('modal-overlay').style.display = 'flex';
 }
 
-let startX, startY, isSwipe = false;
-window.addEventListener('touchstart', e => {
-  if (e.target.closest('#notes-list') || e.target.closest('.grid-btns') || e.target.closest('#tabs-bar') || e.target.closest('input') || e.target.closest('#modal-overlay') || e.target.closest('button')) return;
-  startX = e.touches[0].clientX; startY = e.touches[0].clientY; isSwipe = true;
-}, {passive:true});
-window.addEventListener('touchmove', e => {
-  if (!isSwipe) return;
-  let dX = e.touches[0].clientX - startX, dY = e.touches[0].clientY - startY;
-  if (Math.abs(dX) > Math.abs(dY) && Math.abs(dX) > 35) { switchScreen(dX > 0 ? 0 : 1); isSwipe = false; }
-}, {passive:true});
+function closeModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+}
+
+function commitRegistryEdits() {
+  const id = parseInt(document.getElementById('edit-book-id').value, 10);
+  const item = appState.library.find(x => x.id === id);
+  if (!item) return;
+
+  const nTitle = document.getElementById('edit-book-title').value.trim();
+  const nPages = parseInt(document.getElementById('edit-book-pages').value, 10);
+  const nImp = parseInt(document.getElementById('edit-book-importance').value, 10);
+  const nDiff = parseInt(document.getElementById('edit-book-difficulty').value, 10);
+
+  if (!nTitle) return showToast("name required");
+  if (isNaN(nPages) || nPages < 1) return showToast("pages invalid");
+  if (!validateOneToTen(nImp)) return showToast("importance 1-10 only");
+  if (!validateOneToTen(nDiff)) return showToast("difficulty 1-10 only");
+
+  item.title = nTitle; item.totalPages = nPages; item.importance = nImp; item.difficulty = nDiff;
+
+  saveToLocalStorage();
+  renderLibraryInventory();
+  closeModal();
+}
+
+function executeMultivariateOLS(tag, currentHsw, itemDifficulty) {
+  const filtered = appState.logs.filter(x => x.tag === tag && x.pagesRead > 0);
+  if (filtered.length < 3) {
+    if (['math', 'science', 'tech'].includes(tag)) return 170;
+    if (['manga', 'news'].includes(tag)) return 35;
+    return 85;
+  }
+  let cX1 = 0, cX2 = 0, cY = 0;
+  filtered.forEach(log => { cX1 += log.hsw || 5; cX2 += log.difficulty || 5; cY += (log.seconds / log.pagesRead); });
+  const mX1 = cX1 / filtered.length, mX2 = cX2 / filtered.length, mY = cY / filtered.length;
+  let vN = 0, vD = 0;
+  filtered.forEach(log => {
+    const s = log.seconds / log.pagesRead;
+    vN += ((log.hsw || 5) - mX1) * (s - mY);
+    vD += Math.pow(((log.hsw || 5) - mX1), 2);
+  });
+  const b1 = vD !== 0 ? vN / vD : 0;
+  const b0 = mY - (b1 * mX1);
+  return Math.max(b0 + (b1 * currentHsw), 12);
+}
+
+function triggerOracleCalculations() {
+  const validIncompletePool = appState.library.filter(x => x.completedPages < x.totalPages);
+  if (validIncompletePool.length === 0) return showToast("Zero incomplete parameters in matrix.");
+
+  const activeBtn = document.getElementById('oracle-btn');
+  activeBtn.disabled = true;
+
+  const frames = ["▖ CONTEXT SYNC", "▘ DECODE BIO", "▝ OLS PREDICT", "▗ ORACLE DECREE"];
+  let fIdx = 0;
+  const loopRef = setInterval(() => { activeBtn.innerText = frames[fIdx % frames.length]; fIdx++; }, 250);
+
+  setTimeout(() => {
+    clearInterval(loopRef);
+    activeBtn.disabled = false;
+    activeBtn.innerText = "Consult the Oracle";
+    processOracleTargetAssignment(validIncompletePool);
+  }, 2000);
+}
+
+function processOracleTargetAssignment(pool) {
+  const todayKey = new Date().toISOString().split('T')[0];
+  const wakeTimestamp = new Date(appState.sleepRegistry[todayKey].wakeTime);
+  const currentHsw = (new Date() - wakeTimestamp) / (1000 * 60 * 60);
+  const iAlert = 0.6 * Math.sin((Math.PI * currentHsw) / 6) + 0.4 * Math.cos((Math.PI * currentHsw) / 12);
+  const optCeil = iAlert * appState.sleepRegistry[todayKey].computedQuality;
+
+  let optimal = null, maxP = -Infinity;
+  pool.forEach(item => {
+    const u = 1.0 - (item.completedPages / item.totalPages);
+    const d = 1.0 - Math.abs(optCeil - (item.difficulty / 10));
+    const score = (item.importance * 2.2) + (d * 9) + (u * 4);
+    if (score > maxP) { maxP = score; optimal = item; }
+  });
+
+  if (optimal) {
+    const pSec = executeMultivariateOLS(optimal.tag, currentHsw, optimal.difficulty);
+    let cPages = Math.round(2700 / pSec);
+    cPages = Math.max(1, Math.min(cPages, (optimal.totalPages - optimal.completedPages), 25));
+
+    currentActiveTask = { bookId: optimal.id, tag: optimal.tag, difficulty: optimal.difficulty, pagesToRead: cPages, hsw: currentHsw };
+
+    document.getElementById('oracle-action-zone').style.display = 'none';
+    document.getElementById('active-assignment-zone').style.display = 'block';
+    document.getElementById('assignment-text').innerText = `Directive: ${cPages} pgs of "${optimal.title}" [${optimal.tag.toUpperCase()}]`;
+
+    trackedSeconds = 0;
+    document.getElementById('stopwatch-display').innerText = `00:00`;
+    taskTimerRef = setInterval(() => {
+      trackedSeconds++;
+      const m = String(Math.floor(trackedSeconds / 60)).padStart(2, '0');
+      const s = String(trackedSeconds % 60).padStart(2, '0');
+      document.getElementById('stopwatch-display').innerText = `${m}:${s}`;
+    }, 1000);
+  }
+}
+
+function completeActiveAssignment() {
+  clearInterval(taskTimerRef);
+  const item = appState.library.find(x => x.id === currentActiveTask.bookId);
+
+  if (item) {
+    item.completedPages = Math.min(item.totalPages, item.completedPages + currentActiveTask.pagesToRead);
+    const todayKey = new Date().toISOString().split('T')[0];
+    appState.logs.push({ date: todayKey, tag: currentActiveTask.tag, difficulty: currentActiveTask.difficulty, pagesRead: currentActiveTask.pagesToRead, seconds: trackedSeconds, hsw: currentActiveTask.hsw });
+    saveToLocalStorage();
+    renderLibraryInventory();
+    renderDataVisualizations();
+  }
+
+  currentActiveTask = null;
+  document.getElementById('active-assignment-zone').style.display = 'none';
+  document.getElementById('oracle-action-zone').style.display = 'block';
+}
+
+function renderDataVisualizations() {
+  const gGrowth = document.getElementById('graph-growth'), gVol = document.getElementById('graph-volume'), gDist = document.getElementById('graph-distribution'), gSleep = document.getElementById('graph-sleep'), gSleepHr = document.getElementById('graph-sleep-hours'), tStats = document.getElementById('tag-stats-container');
+
+  if (appState.logs.length === 0 && Object.keys(appState.sleepRegistry).length === 0) {
+    gGrowth.innerHTML = gVol.innerHTML = gDist.innerHTML = gSleep.innerHTML = gSleepHr.innerHTML = '<p>Awaiting data matrix.</p>';
+    tStats.innerHTML = '';
+    return;
+  }
+
+  const dts = [...new Set(appState.logs.map(x => x.date))].sort().slice(-7);
+  const sleepDts = Object.keys(appState.sleepRegistry).sort().slice(-7);
+
+  // Graph 1
+  if(dts.length > 0) {
+    let s1 = `<svg viewBox="0 0 500 160">`;
+    SYSTEM_TAG_LIST.forEach((tag, idx) => {
+      let acc = 0, pts = [];
+      dts.forEach((d, i) => {
+        appState.logs.filter(x => x.date === d && x.tag === tag).forEach(l => acc += l.pagesRead);
+        pts.push(`${40 + (i * 70)},${130 - Math.min(acc * 2, 110)}`);
+      });
+      if(pts.length > 0) s1 += `<polyline points="${pts.join(' ')}" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="${idx * 2},${idx}"/>`;
+    });
+    gGrowth.innerHTML = s1 + `</svg>`;
+
+    // Graph 2
+    let s2 = `<svg viewBox="0 0 500 160">`;
+    dts.forEach((d, i) => {
+      const m = appState.logs.filter(x => x.date === d).reduce((a, c) => a + c.seconds, 0) / 60;
+      const h = Math.min(m * 1.5, 110);
+      s2 += `<rect x="${40 + (i * 70)}" y="${130 - h}" width="45" height="${h}" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" /><text x="${45 + (i * 70)}" y="145" fill="var(--text)" font-size="9">${d.slice(5)}</text>`;
+    });
+    gVol.innerHTML = s2 + `</svg>`;
+
+    // Stats
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    const sevAgo = new Date(now); sevAgo.setDate(now.getDate() - 7);
+    
+    let stHtml = '';
+    SYSTEM_TAG_LIST.forEach(t => {
+      const lgs = appState.logs.filter(x => x.tag === t);
+      if(lgs.length === 0) return;
+      const tMin = lgs.reduce((a,c)=>a+c.seconds,0)/60;
+      const wLgs = lgs.filter(x => new Date(x.date) >= sevAgo);
+      const wMin = wLgs.reduce((a,c)=>a+c.seconds,0)/60;
+      stHtml += `<div class="tag-stat">${t.toUpperCase()} <span>Wk: ${(wMin/60).toFixed(1)}h | Tot: ${(tMin/60).toFixed(1)}h</span></div>`;
+    });
+    tStats.innerHTML = stHtml;
+
+    // Graph 3
+    let s3 = `<svg viewBox="0 0 500 160">`;
+    dts.forEach((d, i) => {
+      const x = 45 + (i * 70); let y = 130;
+      appState.logs.filter(x => x.date === d).forEach(l => {
+        const h = Math.min((l.seconds / 60) * 1.8, 100); y -= h;
+        s3 += `<rect x="${x}" y="${y}" width="35" height="${h}" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,2"/>`;
+      });
+      s3 += `<text x="${x}" y="145" fill="var(--text)" font-size="9">${d.slice(5)}</text>`;
+    });
+    gDist.innerHTML = s3 + `</svg>`;
+
+    // Graph 4
+    let s4 = `<svg viewBox="0 0 500 160">`;
+    dts.forEach((d) => {
+      const s = appState.sleepRegistry[d]; if (!s) return;
+      const dl = appState.logs.filter(x => x.date === d); if (dl.length === 0) return;
+      const c = dl.reduce((a, c) => a + (c.seconds / c.pagesRead), 0) / dl.length;
+      const cx = 50 + (s.computedQuality * 320), cy = 130 - Math.min(c * 0.4, 110);
+      s4 += `<g stroke="var(--accent)" stroke-width="1.5"><line x1="${cx - 5}" y1="${cy}" x2="${cx + 5}" y2="${cy}" /><line x1="${cx}" y1="${cy - 5}" x2="${cx}" y2="${cy + 5}" /></g><text x="${cx + 7}" y="${cy + 3}" fill="var(--text)" font-size="8">${d.slice(5)}</text>`;
+    });
+    gSleep.innerHTML = s4 + `<text x="10" y="20" fill="var(--gray)" font-size="9">Y: Frict</text><text x="380" y="150" fill="var(--gray)" font-size="9">X: Sleep</text></svg>`;
+  }
+
+  // Graph 5: Sleep Hours
+  if(sleepDts.length > 0) {
+    let s5 = `<svg viewBox="0 0 500 160">`;
+    sleepDts.forEach((d, i) => {
+      const hData = appState.sleepRegistry[d].hoursDuration;
+      const hVis = Math.min(hData * 10, 110);
+      const x = 40 + (i * 70);
+      s5 += `<rect x="${x}" y="${130 - hVis}" width="45" height="${hVis}" fill="var(--surface)" stroke="var(--accent)" stroke-width="1" />`;
+      s5 += `<text x="${x+5}" y="${130 - hVis - 5}" fill="var(--accent)" font-size="9">${hData.toFixed(1)}</text>`;
+      s5 += `<text x="${x+5}" y="145" fill="var(--text)" font-size="9">${d.slice(5)}</text>`;
+    });
+    s5 += `<line x1="20" y1="${130 - 80}" x2="480" y2="${130 - 80}" stroke="var(--gray)" stroke-dasharray="4,4" stroke-width="1"/>`; // 8hr target line
+    s5 += `<text x="2" y="${130 - 82}" fill="var(--gray)" font-size="8">8h</text>`;
+    gSleepHr.innerHTML = s5 + `</svg>`;
+  }
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem('shintaku_state', JSON.stringify(appState));
+}
 
 function setTheme(t) {
-  currentTheme = t; document.body.setAttribute('data-theme', t);
+  appState.theme = t; 
+  document.body.setAttribute('data-theme', t);
   document.querySelectorAll('#theme-btns .theme-btn').forEach(b => {
     b.classList.toggle('active', b.innerText.toLowerCase() === t || (t==='catppuccin-frappe' && b.innerText==='FRAPPE') || (t==='everforest-light' && b.innerText==='EV-LIGHT') || (t==='tokyo-night' && b.innerText==='TOKYO'));
   });
-  saveData();
+  saveToLocalStorage();
 }
-function setFont(f) { currentFont = f; document.body.style.fontFamily = f; saveData(); }
-function chgSize(d) { fontSize = Math.max(10, Math.min(24, fontSize + d)); updateSizeDisp(); saveData(); }
-function updateSizeDisp() { document.body.style.fontSize = fontSize + 'px'; document.getElementById('f-size-disp').innerText = fontSize + 'px'; }
-function toggleDt(v) { doubleTapDelete = v; saveData(); }
-function toggleAddBtm(v) { addNoteBottom = v; saveData(); }
+
+function setFont(f) { 
+  appState.font = f; 
+  document.body.style.fontFamily = f; 
+  saveToLocalStorage();
+}
+
+function chgSize(d) { 
+  appState.fontLevel = Math.max(1, Math.min(10, appState.fontLevel + d)); 
+  updateSizeDisplayEngine(); 
+  saveToLocalStorage();
+}
+
+function updateSizeDisplayEngine() { 
+  const px = 10 + (appState.fontLevel * 2);
+  document.body.style.fontSize = px + 'px'; 
+  document.getElementById('f-size-disp').innerText = appState.fontLevel; 
+}
 
 function loadCustomFont(e) {
-  const f = e.target.files[0]; if(!f) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    customFontData = ev.target.result;
-    injectCustomFont(customFontData);
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    appState.customFontData = ev.target.result;
+    injectCustomFont(appState.customFontData);
     setFont('CustomFont');
-    saveData();
+    saveToLocalStorage();
   };
-  r.readAsDataURL(f);
+  reader.readAsDataURL(file);
 }
+
 function injectCustomFont(data) {
   let s = document.getElementById('c-font');
   if(!s) { s = document.createElement('style'); s.id = 'c-font'; document.head.appendChild(s); }
   s.textContent = `@font-face { font-family: 'CustomFont'; src: url('${data}'); }`;
 }
 
-function renderTabs() {
-  const bar = document.getElementById('tabs-bar'); bar.innerHTML = '';
-  noteCategories.forEach(t => {
-    const d = document.createElement('div');
-    d.className = `tab ${activeCategory === t ? 'active' : ''}`;
-    d.textContent = t; d.dataset.tab = t;
-    d.onclick = () => { activeCategory = t; renderTabs(); renderNotes(); };
-    bindLongPress(d, 'tab'); bar.appendChild(d);
-  });
-}
-
-function renderNotes() {
-  const list = document.getElementById('notes-list'), trash = document.getElementById('trash-list');
-  list.innerHTML = ''; trash.innerHTML = ''; let rem = 0, comp = 0;
-  
-  notes.forEach(n => {
-    if (n.category !== activeCategory) return;
-    n.completed ? comp++ : rem++;
-    const d = document.createElement('div');
-    d.className = `note-item ${n.completed ? 'done' : ''}`; d.dataset.id = n.id;
-    d.innerHTML = `<span>${n.text}</span>
-                   <span onclick="copyNote(event, ${n.id})" style="color:var(--gray); padding: 0 5px; margin-right: 10px; flex-shrink: 0;">√c</span>
-                   <span onclick="trashNote(event, ${n.id})" style="color:var(--gray); padding: 0 5px; flex-shrink: 0;">√d</span>`;
-    d.onclick = (e) => {
-      if (e.target.tagName === 'SPAN' && e.target.innerText.includes('√')) return;
-      n.completed = !n.completed; 
-      if (navigator.vibrate) navigator.vibrate(30); 
-      
-      let txt = n.text.trim();
-      if(/^https?:\/\//i.test(txt) || /^www\./i.test(txt)) {
-        window.location.href = txt.startsWith('http') ? txt : 'https://' + txt;
-      }
-      
-      renderNotes(); saveData();
-    };
-    bindLongPress(d, 'note'); list.appendChild(d);
-  });
-
-  recycleBin.forEach((n, idx) => {
-    const d = document.createElement('div'); d.className = 'note-item'; d.style.padding = '8px 0';
-    d.innerHTML = `<span>${n.text}</span><span onclick="restoreNote(${idx})" style="color:var(--gray); padding: 0 5px; flex-shrink: 0;">√r</span>`;
-    trash.appendChild(d);
-  });
-  
-  document.getElementById('stats').textContent = `Remaining: ${rem} \u00A0\u00A0 Completed: ${comp}`;
-}
-
-function copyNote(e, id) {
-  e.stopPropagation();
-  let n = notes.find(x => x.id === id);
-  if(n) {
-    navigator.clipboard.writeText(n.text);
-    if (navigator.vibrate) navigator.vibrate(15);
-  }
-}
-
-document.getElementById('note-in').onkeydown = e => {
-  if (e.key === 'Enter' && e.target.value.trim()) {
-    let v = e.target.value.trim();
-    if(v.startsWith('///')) {
-      let t = v.slice(3).trim();
-      if(t) addTab(t);
-    }
-    else if(v.startsWith('\\\\\\')) {
-      deleteTabClick();
-    }
-    else {
-      let n = { id: Date.now(), text: v, completed: false, category: activeCategory };
-      if(addNoteBottom) notes.push(n);
-      else notes.unshift(n);
-    }
-    e.target.value = ''; renderNotes(); saveData();
-  }
-};
-
-function trashNote(e, id) {
-  e.stopPropagation();
-  if (doubleTapDelete) {
-    let now = Date.now();
-    if (now - lastTrashTap < 300) { executeTrash(id); }
-    else { if (navigator.vibrate) navigator.vibrate(15); }
-    lastTrashTap = now;
-  } else { executeTrash(id); }
-}
-function executeTrash(id) {
-  let idx = notes.findIndex(x => x.id === id);
-  if(idx > -1) {
-    let n = notes.splice(idx, 1)[0];
-    recycleBin.push(n);
-    renderNotes(); saveData();
-  }
-}
-function restoreNote(index) {
-  let n = recycleBin.splice(index, 1)[0];
-  if(n) {
-    notes.push(n);
-    renderNotes(); saveData();
-  }
-}
-function clearTrash() { recycleBin = []; renderNotes(); saveData(); }
-
-function openPrompt(title, defaultVal, cb) {
-  document.getElementById('modal-title').innerText = title;
-  const inp = document.getElementById('modal-input'); inp.value = defaultVal;
-  document.getElementById('modal-overlay').style.display = 'flex';
-  setTimeout(() => inp.focus(), 100); modalCb = cb;
-}
-function closeModal(saveAction) {
-  document.getElementById('modal-overlay').style.display = 'none';
-  if(saveAction && modalCb) modalCb(document.getElementById('modal-input').value.trim());
-}
-
-function renameTab(n) {
-  if (n && !noteCategories.includes(n)) {
-    notes.forEach(x => { if(x.category === contextTab) x.category = n; });
-    recycleBin.forEach(x => { if(x.category === contextTab) x.category = n; });
-    noteCategories[noteCategories.indexOf(contextTab)] = n;
-    activeCategory = n; renderTabs(); renderNotes(); saveData();
-  }
-}
-function addTab(n) {
-  if (n && !noteCategories.includes(n)) {
-    noteCategories.push(n); activeCategory = n; renderTabs(); renderNotes(); saveData();
-  }
-}
-function deleteTabClick() {
-  let t = contextTab || activeCategory;
-  if (noteCategories.length > 1) {
-    noteCategories = noteCategories.filter(x => x !== t);
-    notes = notes.filter(note => {
-      if (note.category === t) { recycleBin.push(note); return false; }
-      return true;
-    });
-    if (activeCategory === t) activeCategory = noteCategories[0];
-    renderTabs(); renderNotes(); saveData();
-  }
-}
-function moveTab(dir) {
-  let idx = noteCategories.indexOf(contextTab);
-  if(idx < 0) return;
-  let nIdx = idx + dir;
-  if(nIdx >= 0 && nIdx < noteCategories.length) {
-    let t = noteCategories[idx];
-    noteCategories[idx] = noteCategories[nIdx];
-    noteCategories[nIdx] = t;
-    renderTabs(); saveData();
-  }
-  document.getElementById('context-menu').style.display = 'none';
-}
-
-function showMenu(x, y) { 
-  const m = document.getElementById('context-menu'); 
-  m.style.display = 'block'; m.style.left = x + 'px'; m.style.top = y + 'px'; 
-  let idx = noteCategories.indexOf(contextTab);
-  document.getElementById('btn-mv-l').style.display = idx > 0 ? 'block' : 'none';
-  document.getElementById('btn-mv-r').style.display = idx < noteCategories.length - 1 ? 'block' : 'none';
-}
-window.onclick = (e) => { if(!e.target.closest('.menu')) document.getElementById('context-menu').style.display = 'none'; }
-
-function bindLongPress(el, type) {
-  el.addEventListener('touchstart', e => {
-    touchTimer = setTimeout(() => {
-      if (navigator.vibrate) navigator.vibrate(60);
-      dragType = type; dragTarget = el;
-      if (type === 'tab') { contextTab = el.dataset.tab; showMenu(e.touches[0].clientX, e.touches[0].clientY); return; }
-      el.classList.add('ghost');
-      dragImg = el.cloneNode(true); dragImg.className = 'drag-image'; document.body.appendChild(dragImg);
-      moveDragImg(e.touches[0].clientX, e.touches[0].clientY);
-    }, 250);
-  }, {passive:true});
-  el.addEventListener('touchend', cleanDrag);
-  el.addEventListener('touchmove', e => {
-    if(!dragImg) {
-      clearTimeout(touchTimer);
-    } else {
-      if(dragType === 'note') e.preventDefault();
-      moveDragImg(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  }, {passive:false});
-}
-
-function moveDragImg(x, y) { if(dragImg) { dragImg.style.left = (x - 20) + 'px'; dragImg.style.top = (y - 20) + 'px'; } }
-
-function cleanDrag() {
-  clearTimeout(touchTimer);
-  document.querySelectorAll('.tab').forEach(t => t.style.opacity = '1');
-  
-  if (dragTarget && dragType === 'note') {
-    if (hoveredTab) {
-      let tCat = hoveredTab.dataset.tab;
-      let nId = parseInt(dragTarget.dataset.id);
-      let n = notes.find(x => x.id === nId);
-      if(n && n.category !== tCat) { n.category = tCat; }
-      dragTarget.remove();
-    } else {
-      const ids = [...document.getElementById('notes-list').querySelectorAll('.note-item')].map(x => parseInt(x.dataset.id));
-      let currentCatNotes = ids.map(id => notes.find(x => x.id === id)).filter(Boolean);
-      let otherCatNotes = notes.filter(x => x.category !== activeCategory);
-      notes = [...currentCatNotes, ...otherCatNotes];
-    }
-    saveData();
-    if (hoveredTab) renderNotes();
-  }
-
-  if (dragTarget) dragTarget.classList.remove('ghost');
-  if (dragImg) { dragImg.remove(); dragImg = null; }
-  dragTarget = null; dragType = null; hoveredTab = null;
-}
-
-function setupDragAndDrop() {
-  document.getElementById('home-screen').addEventListener('touchmove', e => {
-    if (!dragTarget || !dragImg || dragType !== 'note') return;
-    e.preventDefault();
-    const touch = e.touches[0];
-    
-    let elPoint = document.elementFromPoint(touch.clientX, touch.clientY);
-    hoveredTab = elPoint ? elPoint.closest('.tab') : null;
-    document.querySelectorAll('.tab').forEach(t => t.style.opacity = '1');
-    
-    if(hoveredTab) {
-      hoveredTab.style.opacity = '0.5';
-    } else {
-      const items = [...document.getElementById('notes-list').querySelectorAll('.note-item:not(.ghost)')];
-      const next = items.find(item => touch.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2);
-      if (next) document.getElementById('notes-list').insertBefore(dragTarget, next);
-      else document.getElementById('notes-list').appendChild(dragTarget);
-    }
-  }, {passive:false});
-}
-
-function mergeNotes(imported) {
-  if(!Array.isArray(imported)) return;
-  imported.forEach(n => {
-    if(n.category && !noteCategories.includes(n.category)) noteCategories.push(n.category);
-    if(!notes.some(x => x.id === n.id)) notes.push(n);
-  });
-  saveData(); renderTabs(); renderNotes();
-}
-
 function exportData() {
-  let fileData = JSON.stringify(notes);
-  if (window.Android && window.Android.saveFile) {
-    window.Android.saveFile("notes.json", fileData, "application/json");
-  } else {
-    const blob = new Blob([fileData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = "notes.json"; a.click();
-    URL.revokeObjectURL(url);
-  }
-}
-
-function triggerImport() {
-  if (window.Android && window.Android.importJsonFile) {
-    window.Android.importJsonFile();
-  } else {
-    document.getElementById('import-file').click();
-  }
+  const blob = new Blob([JSON.stringify(appState)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = "shintaku_data.json"; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function importData(e) {
-  const f = e.target.files[0]; if(!f) return;
-  const r = new FileReader();
-  r.onload = ev => { try { mergeNotes(JSON.parse(ev.target.result)); } catch(err) { alert("Import failed."); } };
-  r.readAsText(f);
-  e.target.value = '';
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      appState = { ...appState, ...parsed };
+      saveToLocalStorage();
+      appRuntimeInit();
+      showToast("import ok");
+    } catch(err) { showToast("import failed"); }
+  };
+  reader.readAsText(file);
 }
 
-window.setAndroidNotes = function(jsonString) {
-  try { mergeNotes(JSON.parse(jsonString)); } catch(err) {}
-};
-
-init();
+appRuntimeInit();
 </script>
 </body>
 </html>
