@@ -1,13 +1,91 @@
-# Karui ToDo
+# shintaku
+
+local-first study oracle. eliminates decision fatigue. you input sleep metrics, it calculates biological cognitive capacity. you input syllabus, it assigns exact page counts based on real-time neural alignment. it learns your reading speed. it builds its own graphs. zero external dependencies. zero tracking.
+
+## architecture
+
+* pure javascript.
+* semantic html.
+* native inline css variables for theming.
+* native svg generation for data visualization.
+* localstorage database.
+
+## the algorithms
+
+shintaku operates on three math engines: circadian alignment, regression-based speed prediction, and a priority scoring matrix.
+
+### 1. epi-circadian engine
+
+humans do not have linear focus. focus is a wave dictated by sleep quality and hours since wake (hsw).
+
+sleep quality ($Q$) is calculated using duration against an 8-hour target, penalized by daytime light exposure (if waking between 10am and 10pm, environmental light degrades rem/deep sleep quality):
+
+$$Q = \min\left(\frac{D_{\text{actual}}}{8.0} \cdot A, 1.2\right)$$
+
+where $A$ is the alignment penalty (0.75 for daytime sleepers, 1.0 for night sleepers).
+
+raw biological alertness ($A_{raw}$) uses an asymmetric bi-bimodal curve. it maps the primary post-wake peak and the secondary evening wind-down:
+
+$$A_{raw} = 0.6 \cdot \sin\left(\frac{\pi \cdot \text{hsw}}{6}\right) + 0.4 \cdot \cos\left(\frac{\pi \cdot \text{hsw}}{12}\right)$$
+
+final cognitive potential ($C_p$) is the product of sleep quality and raw alertness:
+
+$$C_p = A_{raw} \cdot Q$$
+
+### 2. multivariate ordinary least squares (ols) regression
+
+the oracle needs to assign a 45-minute sprint. to do this, it must predict how fast you read specific subjects at specific times of day. brain.js is too bloated. shintaku uses a custom multivariate linear regression model built in 20 lines of vanilla js.
+
+it maps historical data:
+
+* $X_1$: hours since wake
+* $X_2$: subject difficulty
+* $Y$: seconds per page
+
+it calculates the means ($\bar{x}$, $\bar{y}$) of your historical reading logs for a specific tag.
+
+slope ($B_1$) is calculated via covariance and variance:
+
+$$B_1 = \frac{\sum (X_i - \bar{x})(Y_i - \bar{y})}{\sum (X_i - \bar{x})^2}$$
+
+y-intercept ($B_0$):
+
+$$B_0 = \bar{y} - B_1\bar{x}$$
+
+predicted speed for current session:
+
+$$Y_{predicted} = B_0 + (B_1 \cdot \text{current hsw})$$
+
+if data is scarce (cold start), it uses deterministic fallbacks (e.g., math = 170 secs/page, manga = 35 secs/page).
+
+### 3. oracle priority matrix
+
+when consulted, the oracle scores every incomplete book in your library. highest score wins.
+
+urgency ($U$) scales as you approach completion:
+
+$$U = 1 - \left(\frac{\text{pages completed}}{\text{total pages}}\right)$$
+
+difficulty alignment ($D$) matches the book's difficulty to your real-time brain capacity. hard math aligns with peak $C_p$. light reading aligns with circadian dips.
+
+$$D = 1 - \left| C_p - \frac{\text{difficulty}}{10} \right|$$
+
+total priority score ($P$):
+
+$$P = (Importance \cdot 2.2) + (D \cdot 9) + (U \cdot 4)$$
+
+once a book is selected, the oracle calculates exact page assignment to hit a 45-minute (2700 seconds) target block:
+
+$$\text{Pages} = \frac{2700}{Y_{predicted}}$$
+
+pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
 
 <div align="center">
   <img src="fastlane/metadata/android/en-US/images/icon.png" alt="App Icon" />
 </div>
 
-## Overview
 
-An open source Google Tasks alternative to quickly jot down things to do.  
-Inspired by the system-24 theme and the Windows Mobile design system, this app's design is set to evolve into something even more eye-catching.
+Inspired by the system-24 theme aesthetics.
 
 ## Screenshots
 
@@ -15,87 +93,21 @@ Inspired by the system-24 theme and the Windows Mobile design system, this app's
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Screenshot 1" width="45%">
   
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="Screenshot 2" width="45%">
-  
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Screenshot 3" width="45%">
-  
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" alt="Screenshot 4" width="45%">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" alt="Screenshot 5" width="45%">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" alt="Screenshot 6" width="45%">
 </div>
 
-## Features
 
-- **Simple note taking and list making:** Includes an undo delete feature.
-- **Retro terminalesque design:** Inspired by Unix customizations found online.
-- Use unix like commands to set or remove notes tabs.
-- **Lightweight:** Consumes only 0.05% CPU and 128KB of RAM. After all, simple apps shouldn't need more—remember, the Apollo mission operated on a computer with around 4KB of RAM!
-- **Highly customizable:** Offers many themes with plans to add more customizations such as fonts, font sizes, and border colors.
-
-## Features That Won't Be Added
-
-- **Editing a note:** Experience shows that editing a todo list can lead to chaining multiple tasks. The purpose here is to quickly jot down ideas and tasks, not for deep thinking. For that, a dedicated text editor is more appropriate. (Open to discussion!)
-
-## No Cloud Integration
-
-This app is designed to operate entirely locally, with no cloud storage involved. The app doesn't asks for internet permissions and cannot connect to the internet. Further updates won't add internet permissions either, by design.
-
-## Usage
-
-- Use the input box to make new notes, touch a note to strikethough it, marking it done.
-- Pressing √d deletes a note  it can be restored from recycle bin with √r, √e empties the recycle bin.
-- To add a new note tab, use the `///TabName` format.
-- To remove any tab (except the Main tab), use the `\\\TabName` format.
-- Long press any tab to rename or delete it, or add new tab.
-- Custom fonts are now supported.
-
-## Releases
-
-- You can download the latest apk from github releases section here: [Releases](https://github.com/ronynn/karui/releases)
-
-- Stay updated via our [RSS feed for GitHub releases](https://github.com/ronynn/karui/releases.atom) which includes detailed release notes.
-
-- You can get it from the izzyondroid f-droid repo: 
- [![Get it on IzzyOnDroid](IzzyOnDroid.png)](https://apt.izzysoft.de/fdroid/index/apk/io.github.ronynn.karui)
+## usage
+Put all your books in the app, follow its revelation without question
 
 
-![Downloads (all time)](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fkitswas%2Ffdroid-metrics-dashboard%2Fraw%2Frefs%2Fheads%2Fmain%2Fprocessed%2Ftotal%2Fio.github.ronynn.karui.json&query=%24.total_downloads&logo=fdroid&label=Downloads%20(all%20time))
-
-## Licenses
-Karui is being developed under the GPLv3 License.
-
-## Contributions
-Contributions are welcome, setting up takes nothing more than forking the project and utilising the github actions build setup
-~~Currently I am porting the project from alpinejs to svelte, so I expect new contributions in svelte, but it's not a steadfast rule, I am still learning svelte and porting alpinejs based code so far hasn't feel like any hassle so far.~~ The frontend is completely terse vanillajs at the moment.
-
-## Roadmap
-
-- [x] Get user feedback and suggestions to improve and expand the project scope
-- [x] Fix import `.json` bugs
-- [x] Enhance accessibility with larger touch areas
-- [x] Pivot control styled tab switcher
-- [x] Gesture flick to change tabs
-- [x] Karui opening theme should be gruvbox?
-- [ ] Resolve dynamic color issues (😔 still figuring this one out—maybe a short break is needed)(i need a pc that can run android studio well, github workflows setup feels difficult to get this done)
-- [x] Font size settings
-- [x] Introduce more themes and font options.
-- [x] Make the UI more responsive for tablets and larger screens
-- [x] Letting user to select their own fonts from file picker
-- [x] Pressing active tab tries to do some animation (#bug)
-- [x] Toggle option to use double tap √d to delete instead of a single tap
-
-Cancelled items from roadmap
-- [ ] Add translations (didn't face the need)
-- [ ] Develop widgets (e.g., Java fetching notes from localStorage, a static scrollable list of existing notes)(very difficult)
-- [ ] Explore cloud saving options without internet connection (piping to arcane chat? how would it sync?)(syncing will be too messy, just export json when changing phones)
-- [ ] Integrate app data piping to Obsidian or a new notes app (I dont use obsidian on android any more, too slow)
-- [ ] Add share intent functionality (to support QR apps that generate QR codes from text or `.json`) (qr is limited to 3kb at best, compressing todos to fit that feels odd and limited feature)
-- [ ] Incorporate a QR library to generate QR codes from notes and read them using the system camera, facilitating easy note sharing between devices. (qr too limited)
+## licenses
+Shintaku is being developed under the GPLv3 License.
 
 
 
-## Follow the Development
+## follow the development
 
-Join us (my thought process and approach with other's opinions) on telegram: <https://t.me/karuifoss>
+See my thought process and approach with other's opinions on telegram: <https://t.me/karuifoss>
 This app has been primarily made on my phone with Acode editor with alpine linux terminal.
 
 Github Issues are the fastest way to get in touch, for other means there's gitlab, bluesky, and my dev.to account, all linked in my account page on github and [homepage](https://ronynn.github.io).
