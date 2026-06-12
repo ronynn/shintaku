@@ -9,8 +9,8 @@ android {
         applicationId "io.github.ronynn.shintaku"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 6
-        versionName "1.6"
+        versionCode 1
+        versionName "1.1"
     }
     
     signingConfigs {
