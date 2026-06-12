@@ -1,14 +1,17 @@
 # shintaku
 
-the app stems from my anxiety about what to study. i study one thing and worry about another. local-first study oracle. eliminates decision fatigue on what to study. you input sleep metrics, it calculates biological cognitive capacity. you input syllabus, it assigns exact page counts based on real-time neural alignment. it learns your reading speed. it builds its own graphs. zero external dependencies. zero tracking.
+The app stems from my anxiety about what to study. i study one thing and worry about another. It eliminates decision fatigue on what to study. You input sleep metrics, it calculates biological cognitive capacity, you input syllabus, it assigns exact page counts based on real-time neural alignment. It learns your reading speed, it builds its own graphs, zero external dependencies. zero tracking.
 
-## architecture
+An open source, privacy focussed, math model oracle android app that tells you what to study next.
 
-* pure javascript.
-* semantic html.
-* native inline css variables for theming.
-* native svg generation for data visualization.
-* localstorage database.
+## features
+
+- Add list of books you need to study with how many pages they are, and how difficult they are (for example I made a manga tag you can use to read magazines which have difficulty rating of 1/10).
+- Follow the oracle's order and complete the amount of pages it gave you, you could complete more pages and input study progress too.
+- Retro terminalesque design: Inspired by Unix customizations found online.
+- Lightweight: Consumes only 0.06% CPU and 85KB of RAM. After all, simple apps shouldn't need more—remember, the Apollo mission operated on a computer with around 4KB of RAM!
+- Highly customizable: Offers many themes with option for custom fonts.
+
 
 <div align="center">
   <img src="fastlane/metadata/android/en-US/images/icon.png" alt="App Icon" width="45%">
@@ -87,7 +90,6 @@ $$\text{Pages} = \frac{2700}{Y_{predicted}}$$
 pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
 
 
-Inspired by the system-24 theme aesthetics.
 
 ## Screenshots
 
