@@ -98,8 +98,6 @@ pages are clamped between 1 and 25 to prevent extreme assignments. user clicks s
 </div>
 
 
-## usage
-Put all your books in the app, follow its revelation without question
 
 
 ## licenses
