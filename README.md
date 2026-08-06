@@ -87,7 +87,7 @@ once a book is selected, the oracle calculates exact page assignment to hit a 45
 
 $$\text{Pages} = \frac{2700}{Y_{predicted}}$$
 
-pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
+Pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
 
 
 
