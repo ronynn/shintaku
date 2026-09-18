@@ -19,21 +19,21 @@ An open source, privacy focussed, math model oracle android app that tells you w
 
 
 
-## the algorithms
+## The algorithms
 
-shintaku operates on three math engines: circadian alignment, regression-based speed prediction, and a priority scoring matrix.
+Shintaku operates on three math engines: circadian alignment, regression-based speed prediction, and a priority scoring matrix.
 
-### 1. epi-circadian engine
+### 1. Epi-circadian engine
 
-humans do not have linear focus. focus is a wave dictated by sleep quality and hours since wake (hsw).
+Humans do not have linear focus. Focus is a wave dictated by sleep quality and hours since wake (hsw).
 
-sleep quality ($Q$) is calculated using duration against an 8-hour target, penalized by daytime light exposure (if waking between 10am and 10pm, environmental light degrades rem/deep sleep quality):
+Sleep quality ($Q$) is calculated using duration against an 8-hour target, penalized by daytime light exposure (if waking between 10am and 10pm, environmental light degrades rem/deep sleep quality):
 
 $$Q = \min\left(\frac{D_{\text{actual}}}{8.0} \cdot A, 1.2\right)$$
 
 where $A$ is the alignment penalty (0.75 for daytime sleepers, 1.0 for night sleepers).
 
-raw biological alertness ($A_{raw}$) uses an asymmetric bi-bimodal curve. it maps the primary post-wake peak and the secondary evening wind-down:
+Raw biological alertness ($A_{raw}$) uses an asymmetric bi-bimodal curve. it maps the primary post-wake peak and the secondary evening wind-down:
 
 $$A_{raw} = 0.6 \cdot \sin\left(\frac{\pi \cdot \text{hsw}}{6}\right) + 0.4 \cdot \cos\left(\frac{\pi \cdot \text{hsw}}{12}\right)$$
 
@@ -41,17 +41,17 @@ final cognitive potential ($C_p$) is the product of sleep quality and raw alertn
 
 $$C_p = A_{raw} \cdot Q$$
 
-### 2. multivariate ordinary least squares (ols) regression
+### 2. Multivariate ordinary least squares (ols) regression
 
-the oracle needs to assign a 45-minute sprint. to do this, it must predict how fast you read specific subjects at specific times of day. brain.js is too bloated. shintaku uses a custom multivariate linear regression model built in 20 lines of vanilla js.
+The oracle needs to assign a 45-minute sprint. to do this, it must predict how fast you read specific subjects at specific times of day. Brain.js is too bloated. shintaku uses a custom multivariate linear regression model built in 20 lines of vanilla js.
 
-it maps historical data:
+It maps historical data:
 
 * $X_1$: hours since wake
 * $X_2$: subject difficulty
 * $Y$: seconds per page
 
-it calculates the means ($\bar{x}$, $\bar{y}$) of your historical reading logs for a specific tag.
+It calculates the means ($\bar{x}$, $\bar{y}$) of your historical reading logs for a specific tag.
 
 slope ($B_1$) is calculated via covariance and variance:
 
@@ -65,17 +65,17 @@ predicted speed for current session:
 
 $$Y_{predicted} = B_0 + (B_1 \cdot \text{current hsw})$$
 
-if data is scarce (cold start), it uses deterministic fallbacks (e.g., math = 170 secs/page, manga = 35 secs/page).
+If data is scarce (cold start), it uses deterministic fallbacks (e.g., math = 170 secs/page, manga = 35 secs/page).
 
-### 3. oracle priority matrix
+### 3. Oracle priority matrix
 
-when consulted, the oracle scores every incomplete book in your library. highest score wins.
+When consulted, the oracle scores every incomplete book in your library. highest score wins.
 
-urgency ($U$) scales as you approach completion:
+Urgency ($U$) scales as you approach completion:
 
 $$U = 1 - \left(\frac{\text{pages completed}}{\text{total pages}}\right)$$
 
-difficulty alignment ($D$) matches the book's difficulty to your real-time brain capacity. hard math aligns with peak $C_p$. light reading aligns with circadian dips.
+Difficulty alignment ($D$) matches the book's difficulty to your real-time brain capacity. hard math aligns with peak $C_p$. light reading aligns with circadian dips.
 
 $$D = 1 - \left| C_p - \frac{\text{difficulty}}{10} \right|$$
 
@@ -83,7 +83,7 @@ total priority score ($P$):
 
 $$P = (Importance \cdot 2.2) + (D \cdot 9) + (U \cdot 4)$$
 
-once a book is selected, the oracle calculates exact page assignment to hit a 45-minute (2700 seconds) target block:
+Once a book is selected, the oracle calculates exact page assignment to hit a 45-minute (2700 seconds) target block:
 
 $$\text{Pages} = \frac{2700}{Y_{predicted}}$$
 
@@ -100,12 +100,12 @@ Pages are clamped between 1 and 25 to prevent extreme assignments. user clicks s
 
 
 
-## licenses
+## Licenses
 Shintaku is being developed under the GPLv3 License.
 
 
 
-## follow the development
+## Follow the development
 
 See my thought process and approach with other's opinions on telegram: <https://t.me/karuifoss>
 This app has been primarily made on my phone with Acode editor with alpine linux terminal.
