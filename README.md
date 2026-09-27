@@ -1,10 +1,10 @@
-# shintaku
+# Shintaku
 
-The app stems from my anxiety about what to study. i study one thing and worry about another. It eliminates decision fatigue on what to study. You input sleep metrics, it calculates biological cognitive capacity, you input syllabus, it assigns exact page counts based on real-time neural alignment. It learns your reading speed, it builds its own graphs, zero external dependencies. zero tracking.
+The app stems from my anxiety about what to study. I study one thing and worry about another. It eliminates decision fatigue on what to study. You input sleep metrics, it calculates biological cognitive capacity, you input syllabus, it assigns exact page counts based on real-time neural alignment. It learns your reading speed, it builds its own graphs, zero external dependencies, zero tracking.
 
 An open source, privacy focussed, math model oracle android app that tells you what to study next.
 
-## features
+## Features
 
 - Add list of books you need to study with how many pages they are, and how difficult they are (for example I made a manga tag you can use to read magazines which have difficulty rating of 1/10).
 - Follow the oracle's order and complete the amount of pages it gave you, you could complete more pages and input study progress too.
@@ -87,7 +87,7 @@ Once a book is selected, the oracle calculates exact page assignment to hit a 45
 
 $$\text{Pages} = \frac{2700}{Y_{predicted}}$$
 
-Pages are clamped between 1 and 25 to prevent extreme assignments. user clicks start, stopwatch runs, logic repeats.
+Pages are clamped between 1 and 25 to prevent extreme assignments. User clicks start, stopwatch runs, logic repeats.
 
 
 
@@ -97,6 +97,22 @@ Pages are clamped between 1 and 25 to prevent extreme assignments. user clicks s
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Screenshot 1" width="75%">
 </div>
 
+
+
+## Roadmap
+
+- [ ] Fix export json bugs
+- [ ] Add Forest app's feature that grows a forest the more you study
+- [ ] The timer also shows up in notifications
+- [ ] Should suggest revisions too
+- [ ] calendar view of progress - generate in that folder?
+- [ ] Store time start time end total time taken book name
+- [ ] Chaining glow - just implement github commits like tracker
+- [ ] Time sleep awake - sleep tracker too - sleep quality index 1-10
+- [ ] When bookname given then app state can benefit from petite-vue?
+- [ ] When you reopen app you write time to study
+- [ ] Machine god image or animation (feels too cliche)
+- [ ] Attach image that motivates you , click to open, longpress to dropdown: delete replace
 
 
 
